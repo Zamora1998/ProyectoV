@@ -1,0 +1,1045 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PeliculasProgra11Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ActoresStaff">
+          <Key>
+            <PropertyRef Name="ActorStaffID" />
+          </Key>
+          <Property Name="ActorStaffID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="PaginaWeb" Type="varchar" MaxLength="255" />
+          <Property Name="Facebook" Type="varchar" MaxLength="255" />
+          <Property Name="Instagram" Type="varchar" MaxLength="255" />
+          <Property Name="Twitter" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="CalificacionesExpertos">
+          <Key>
+            <PropertyRef Name="PeliculaID" />
+            <PropertyRef Name="ExpertoID" />
+          </Key>
+          <Property Name="PeliculaID" Type="int" Nullable="false" />
+          <Property Name="ExpertoID" Type="int" Nullable="false" />
+          <Property Name="Calificacion" Type="decimal" Precision="3" Scale="1" />
+        </EntityType>
+        <EntityType Name="Comentarios">
+          <Key>
+            <PropertyRef Name="ComentarioID" />
+          </Key>
+          <Property Name="ComentarioID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PeliculaID" Type="int" />
+          <Property Name="UsuarioID" Type="int" />
+          <Property Name="Comentario" Type="text" />
+          <Property Name="FechaComentario" Type="datetime" />
+          <Property Name="RespuestaAComentarioID" Type="int" />
+        </EntityType>
+        <EntityType Name="Estado">
+          <Key>
+            <PropertyRef Name="EstadoID" />
+          </Key>
+          <Property Name="EstadoID" Type="int" Nullable="false" />
+          <Property Name="NombreEstado" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ExpertosEnCalificaciones">
+          <Key>
+            <PropertyRef Name="ExpertoID" />
+          </Key>
+          <Property Name="ExpertoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="codigoexperto" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Peliculas">
+          <Key>
+            <PropertyRef Name="PeliculaID" />
+          </Key>
+          <Property Name="PeliculaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodPelicula" Type="varchar" MaxLength="50" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Resena" Type="text" />
+          <Property Name="CalificacionGenerQal" Type="int" />
+          <Property Name="FechaLanzamiento" Type="date" />
+          <Property Name="PosterID" Type="int" />
+        </EntityType>
+        <EntityType Name="Posters">
+          <Key>
+            <PropertyRef Name="PosterID" />
+          </Key>
+          <Property Name="PosterID" Type="int" Nullable="false" />
+          <Property Name="NombreArchivo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RutaArchivo" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="RolID" />
+          </Key>
+          <Property Name="RolID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolesEnPelicula">
+          <Key>
+            <PropertyRef Name="RolEnPeliculaID" />
+          </Key>
+          <Property Name="RolEnPeliculaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RolID" Type="int" />
+          <Property Name="ActorStaffID" Type="int" />
+          <Property Name="IDPelic" Type="int" />
+          <Property Name="OrdenAparicion" Type="int" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="UsuarioID" />
+          </Key>
+          <Property Name="UsuarioID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreUsuario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cedula" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Contrasena" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDEstado" Type="int" />
+          <Property Name="Token" Type="varchar" MaxLength="50" />
+          <Property Name="TokenExpiracion" Type="smalldatetime" />
+        </EntityType>
+        <Association Name="FK__Calificac__Exper__49C3F6B7">
+          <End Role="ExpertosEnCalificaciones" Type="Self.ExpertosEnCalificaciones" Multiplicity="1" />
+          <End Role="CalificacionesExpertos" Type="Self.CalificacionesExpertos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertosEnCalificaciones">
+              <PropertyRef Name="ExpertoID" />
+            </Principal>
+            <Dependent Role="CalificacionesExpertos">
+              <PropertyRef Name="ExpertoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__Pelic__48CFD27E">
+          <End Role="Peliculas" Type="Self.Peliculas" Multiplicity="1" />
+          <End Role="CalificacionesExpertos" Type="Self.CalificacionesExpertos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Peliculas">
+              <PropertyRef Name="PeliculaID" />
+            </Principal>
+            <Dependent Role="CalificacionesExpertos">
+              <PropertyRef Name="PeliculaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comentari__Pelic__5070F446">
+          <End Role="Peliculas" Type="Self.Peliculas" Multiplicity="0..1" />
+          <End Role="Comentarios" Type="Self.Comentarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Peliculas">
+              <PropertyRef Name="PeliculaID" />
+            </Principal>
+            <Dependent Role="Comentarios">
+              <PropertyRef Name="PeliculaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comentari__Respu__52593CB8">
+          <End Role="Comentarios" Type="Self.Comentarios" Multiplicity="0..1" />
+          <End Role="Comentarios1" Type="Self.Comentarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comentarios">
+              <PropertyRef Name="ComentarioID" />
+            </Principal>
+            <Dependent Role="Comentarios1">
+              <PropertyRef Name="RespuestaAComentarioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comentari__Usuar__5165187F">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="Comentarios" Type="Self.Comentarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="UsuarioID" />
+            </Principal>
+            <Dependent Role="Comentarios">
+              <PropertyRef Name="UsuarioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Peliculas__Poste__412EB0B6">
+          <End Role="Posters" Type="Self.Posters" Multiplicity="0..1" />
+          <End Role="Peliculas" Type="Self.Peliculas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posters">
+              <PropertyRef Name="PosterID" />
+            </Principal>
+            <Dependent Role="Peliculas">
+              <PropertyRef Name="PosterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolesEnPe__Actor__44FF419A">
+          <End Role="ActoresStaff" Type="Self.ActoresStaff" Multiplicity="0..1" />
+          <End Role="RolesEnPelicula" Type="Self.RolesEnPelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActoresStaff">
+              <PropertyRef Name="ActorStaffID" />
+            </Principal>
+            <Dependent Role="RolesEnPelicula">
+              <PropertyRef Name="ActorStaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolesEnPe__IDPel__45F365D3">
+          <End Role="Peliculas" Type="Self.Peliculas" Multiplicity="0..1" />
+          <End Role="RolesEnPelicula" Type="Self.RolesEnPelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Peliculas">
+              <PropertyRef Name="PeliculaID" />
+            </Principal>
+            <Dependent Role="RolesEnPelicula">
+              <PropertyRef Name="IDPelic" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolesEnPe__RolID__440B1D61">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="0..1" />
+          <End Role="RolesEnPelicula" Type="Self.RolesEnPelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="RolID" />
+            </Principal>
+            <Dependent Role="RolesEnPelicula">
+              <PropertyRef Name="RolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuarios__IDEsta__4D94879B">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="0..1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="EstadoID" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="IDEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_ActivarInactivarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreUsuario" Type="varchar" Mode="In" />
+          <Parameter Name="EstadoU" Type="varchar" Mode="In" />
+          <Parameter Name="Resultado" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="sp_ActualizarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreUsuario" Type="varchar" Mode="In" />
+          <Parameter Name="NuevoNombre" Type="varchar" Mode="In" />
+          <Parameter Name="Cedula" Type="varchar" Mode="In" />
+          <Parameter Name="NuevosApellidos" Type="varchar" Mode="In" />
+          <Parameter Name="NuevoEmail" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_AgregarCalificacionExperto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ExpertoID" Type="int" Mode="In" />
+          <Parameter Name="PeliculaID" Type="int" Mode="In" />
+          <Parameter Name="Calificacion" Type="decimal" Mode="In" />
+          <Parameter Name="Resultado" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="sp_AgregarComentario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PeliculaID" Type="int" Mode="In" />
+          <Parameter Name="UsuarioID" Type="int" Mode="In" />
+          <Parameter Name="TextoComentario" Type="text" Mode="In" />
+          <Parameter Name="RespuestaAComentarioID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_AgregarPelicula" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CodPelicula" Type="varchar" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Resena" Type="text" Mode="In" />
+          <Parameter Name="CalificacionGeneral" Type="int" Mode="In" />
+          <Parameter Name="FechaLanzamiento" Type="date" Mode="In" />
+          <Parameter Name="PosterID" Type="int" Mode="In" />
+          <Parameter Name="Resultado" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="sp_AgregarRespuestaAComentario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PeliculaID" Type="int" Mode="In" />
+          <Parameter Name="UsuarioID" Type="int" Mode="In" />
+          <Parameter Name="TextoComentario" Type="text" Mode="In" />
+          <Parameter Name="ComentarioAResponderID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_AgregarRolEnPelicula" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RolID" Type="int" Mode="In" />
+          <Parameter Name="ActorStaffID" Type="int" Mode="In" />
+          <Parameter Name="IDPelic" Type="int" Mode="In" />
+          <Parameter Name="OrdenAparicion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_AgregarRolSiNoExiste" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreRol" Type="varchar" Mode="In" />
+          <Parameter Name="Resultado" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="sp_ConsultarPeliculaPorCodigo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CodPelicula" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ConsultarUsuarioPorNombre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreUsuario" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_EditarCalificacionExperto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CalificacionExpertoID" Type="int" Mode="In" />
+          <Parameter Name="NuevaCalificacion" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="sp_EditarComentarioPorID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ComentarioID" Type="int" Mode="In" />
+          <Parameter Name="NuevoComentario" Type="text" Mode="In" />
+        </Function>
+        <Function Name="sp_EditarRol" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RolID" Type="int" Mode="In" />
+          <Parameter Name="NuevoNombre" Type="varchar" Mode="In" />
+          <Parameter Name="Resultado" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="sp_EliminarCalificacionExperto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PeliculaID" Type="int" Mode="In" />
+          <Parameter Name="ExpertoID" Type="int" Mode="In" />
+          <Parameter Name="Resultado" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="sp_EliminarComentarioPorID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ComentarioID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_EliminarRolPorNombreOId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreOIdRol" Type="varchar" Mode="In" />
+          <Parameter Name="Resultado" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="sp_EliminarUsuarioPorNombre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreUsuario" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ModificarPeliculaPorCodigo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CodPelicula" Type="varchar" Mode="In" />
+          <Parameter Name="NuevoNombre" Type="varchar" Mode="In" />
+          <Parameter Name="NuevaResena" Type="text" Mode="In" />
+          <Parameter Name="NuevaCalificacion" Type="int" Mode="In" />
+          <Parameter Name="NuevaFechaLanzamiento" Type="date" Mode="In" />
+        </Function>
+        <Function Name="sp_ObtenerCalificadores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ObtenerPeliculasRecientes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_ObtenerTiposInvolucrados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreTipoInvolucrado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_RegistrarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreUsuario" Type="varchar" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Apellidos" Type="varchar" Mode="In" />
+          <Parameter Name="Cedula" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Contrasena" Type="varchar" Mode="In" />
+          <Parameter Name="IDEstado" Type="int" Mode="In" />
+          <Parameter Name="Token" Type="varchar" Mode="In" />
+          <Parameter Name="TokenExpiracion" Type="smalldatetime" Mode="In" />
+          <Parameter Name="Exito" Type="bit" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="PeliculasProgra11ModelStoreContainer">
+          <EntitySet Name="ActoresStaff" EntityType="Self.ActoresStaff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CalificacionesExpertos" EntityType="Self.CalificacionesExpertos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comentarios" EntityType="Self.Comentarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estado" EntityType="Self.Estado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpertosEnCalificaciones" EntityType="Self.ExpertosEnCalificaciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Peliculas" EntityType="Self.Peliculas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Posters" EntityType="Self.Posters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rol" EntityType="Self.Rol" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RolesEnPelicula" EntityType="Self.RolesEnPelicula" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Calificac__Exper__49C3F6B7" Association="Self.FK__Calificac__Exper__49C3F6B7">
+            <End Role="ExpertosEnCalificaciones" EntitySet="ExpertosEnCalificaciones" />
+            <End Role="CalificacionesExpertos" EntitySet="CalificacionesExpertos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__Pelic__48CFD27E" Association="Self.FK__Calificac__Pelic__48CFD27E">
+            <End Role="Peliculas" EntitySet="Peliculas" />
+            <End Role="CalificacionesExpertos" EntitySet="CalificacionesExpertos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comentari__Pelic__5070F446" Association="Self.FK__Comentari__Pelic__5070F446">
+            <End Role="Peliculas" EntitySet="Peliculas" />
+            <End Role="Comentarios" EntitySet="Comentarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comentari__Respu__52593CB8" Association="Self.FK__Comentari__Respu__52593CB8">
+            <End Role="Comentarios" EntitySet="Comentarios" />
+            <End Role="Comentarios1" EntitySet="Comentarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comentari__Usuar__5165187F" Association="Self.FK__Comentari__Usuar__5165187F">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Comentarios" EntitySet="Comentarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Peliculas__Poste__412EB0B6" Association="Self.FK__Peliculas__Poste__412EB0B6">
+            <End Role="Posters" EntitySet="Posters" />
+            <End Role="Peliculas" EntitySet="Peliculas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolesEnPe__Actor__44FF419A" Association="Self.FK__RolesEnPe__Actor__44FF419A">
+            <End Role="ActoresStaff" EntitySet="ActoresStaff" />
+            <End Role="RolesEnPelicula" EntitySet="RolesEnPelicula" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolesEnPe__IDPel__45F365D3" Association="Self.FK__RolesEnPe__IDPel__45F365D3">
+            <End Role="Peliculas" EntitySet="Peliculas" />
+            <End Role="RolesEnPelicula" EntitySet="RolesEnPelicula" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolesEnPe__RolID__440B1D61" Association="Self.FK__RolesEnPe__RolID__440B1D61">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="RolesEnPelicula" EntitySet="RolesEnPelicula" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuarios__IDEsta__4D94879B" Association="Self.FK__Usuarios__IDEsta__4D94879B">
+            <End Role="Estado" EntitySet="Estado" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PeliculasProgra11Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ActoresStaff">
+          <Key>
+            <PropertyRef Name="ActorStaffID" />
+          </Key>
+          <Property Name="ActorStaffID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PaginaWeb" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Facebook" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Instagram" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Twitter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RolesEnPeliculas" Relationship="Self.FK__RolesEnPe__Actor__44FF419A" FromRole="ActoresStaff" ToRole="RolesEnPelicula" />
+        </EntityType>
+        <EntityType Name="CalificacionesExperto">
+          <Key>
+            <PropertyRef Name="PeliculaID" />
+            <PropertyRef Name="ExpertoID" />
+          </Key>
+          <Property Name="PeliculaID" Type="Int32" Nullable="false" />
+          <Property Name="ExpertoID" Type="Int32" Nullable="false" />
+          <Property Name="Calificacion" Type="Decimal" Precision="3" Scale="1" />
+          <NavigationProperty Name="ExpertosEnCalificacione" Relationship="Self.FK__Calificac__Exper__49C3F6B7" FromRole="CalificacionesExpertos" ToRole="ExpertosEnCalificaciones" />
+          <NavigationProperty Name="Pelicula" Relationship="Self.FK__Calificac__Pelic__48CFD27E" FromRole="CalificacionesExpertos" ToRole="Peliculas" />
+        </EntityType>
+        <EntityType Name="Comentario">
+          <Key>
+            <PropertyRef Name="ComentarioID" />
+          </Key>
+          <Property Name="ComentarioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PeliculaID" Type="Int32" />
+          <Property Name="UsuarioID" Type="Int32" />
+          <Property Name="Comentario1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FechaComentario" Type="DateTime" Precision="3" />
+          <Property Name="RespuestaAComentarioID" Type="Int32" />
+          <NavigationProperty Name="Pelicula" Relationship="Self.FK__Comentari__Pelic__5070F446" FromRole="Comentarios" ToRole="Peliculas" />
+          <NavigationProperty Name="Comentarios1" Relationship="Self.FK__Comentari__Respu__52593CB8" FromRole="Comentarios" ToRole="Comentarios1" />
+          <NavigationProperty Name="Comentario2" Relationship="Self.FK__Comentari__Respu__52593CB8" FromRole="Comentarios1" ToRole="Comentarios" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Comentari__Usuar__5165187F" FromRole="Comentarios" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Estado">
+          <Key>
+            <PropertyRef Name="EstadoID" />
+          </Key>
+          <Property Name="EstadoID" Type="Int32" Nullable="false" />
+          <Property Name="NombreEstado" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK__Usuarios__IDEsta__4D94879B" FromRole="Estado" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="ExpertosEnCalificacione">
+          <Key>
+            <PropertyRef Name="ExpertoID" />
+          </Key>
+          <Property Name="ExpertoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="codigoexperto" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CalificacionesExpertos" Relationship="Self.FK__Calificac__Exper__49C3F6B7" FromRole="ExpertosEnCalificaciones" ToRole="CalificacionesExpertos" />
+        </EntityType>
+        <EntityType Name="Pelicula">
+          <Key>
+            <PropertyRef Name="PeliculaID" />
+          </Key>
+          <Property Name="PeliculaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodPelicula" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Resena" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CalificacionGenerQal" Type="Int32" />
+          <Property Name="FechaLanzamiento" Type="DateTime" Precision="0" />
+          <Property Name="PosterID" Type="Int32" />
+          <NavigationProperty Name="CalificacionesExpertos" Relationship="Self.FK__Calificac__Pelic__48CFD27E" FromRole="Peliculas" ToRole="CalificacionesExpertos" />
+          <NavigationProperty Name="Comentarios" Relationship="Self.FK__Comentari__Pelic__5070F446" FromRole="Peliculas" ToRole="Comentarios" />
+          <NavigationProperty Name="Poster" Relationship="Self.FK__Peliculas__Poste__412EB0B6" FromRole="Peliculas" ToRole="Posters" />
+          <NavigationProperty Name="RolesEnPeliculas" Relationship="Self.FK__RolesEnPe__IDPel__45F365D3" FromRole="Peliculas" ToRole="RolesEnPelicula" />
+        </EntityType>
+        <EntityType Name="Poster">
+          <Key>
+            <PropertyRef Name="PosterID" />
+          </Key>
+          <Property Name="PosterID" Type="Int32" Nullable="false" />
+          <Property Name="NombreArchivo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RutaArchivo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Peliculas" Relationship="Self.FK__Peliculas__Poste__412EB0B6" FromRole="Posters" ToRole="Peliculas" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="RolID" />
+          </Key>
+          <Property Name="RolID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="RolesEnPeliculas" Relationship="Self.FK__RolesEnPe__RolID__440B1D61" FromRole="Rol" ToRole="RolesEnPelicula" />
+        </EntityType>
+        <EntityType Name="RolesEnPelicula">
+          <Key>
+            <PropertyRef Name="RolEnPeliculaID" />
+          </Key>
+          <Property Name="RolEnPeliculaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RolID" Type="Int32" />
+          <Property Name="ActorStaffID" Type="Int32" />
+          <Property Name="IDPelic" Type="Int32" />
+          <Property Name="OrdenAparicion" Type="Int32" />
+          <NavigationProperty Name="ActoresStaff" Relationship="Self.FK__RolesEnPe__Actor__44FF419A" FromRole="RolesEnPelicula" ToRole="ActoresStaff" />
+          <NavigationProperty Name="Pelicula" Relationship="Self.FK__RolesEnPe__IDPel__45F365D3" FromRole="RolesEnPelicula" ToRole="Peliculas" />
+          <NavigationProperty Name="Rol" Relationship="Self.FK__RolesEnPe__RolID__440B1D61" FromRole="RolesEnPelicula" ToRole="Rol" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="UsuarioID" />
+          </Key>
+          <Property Name="UsuarioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cedula" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contrasena" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IDEstado" Type="Int32" />
+          <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TokenExpiracion" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Comentarios" Relationship="Self.FK__Comentari__Usuar__5165187F" FromRole="Usuarios" ToRole="Comentarios" />
+          <NavigationProperty Name="Estado" Relationship="Self.FK__Usuarios__IDEsta__4D94879B" FromRole="Usuarios" ToRole="Estado" />
+        </EntityType>
+        <Association Name="FK__RolesEnPe__Actor__44FF419A">
+          <End Role="ActoresStaff" Type="Self.ActoresStaff" Multiplicity="0..1" />
+          <End Role="RolesEnPelicula" Type="Self.RolesEnPelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActoresStaff">
+              <PropertyRef Name="ActorStaffID" />
+            </Principal>
+            <Dependent Role="RolesEnPelicula">
+              <PropertyRef Name="ActorStaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__Exper__49C3F6B7">
+          <End Role="ExpertosEnCalificaciones" Type="Self.ExpertosEnCalificacione" Multiplicity="1" />
+          <End Role="CalificacionesExpertos" Type="Self.CalificacionesExperto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertosEnCalificaciones">
+              <PropertyRef Name="ExpertoID" />
+            </Principal>
+            <Dependent Role="CalificacionesExpertos">
+              <PropertyRef Name="ExpertoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__Pelic__48CFD27E">
+          <End Role="Peliculas" Type="Self.Pelicula" Multiplicity="1" />
+          <End Role="CalificacionesExpertos" Type="Self.CalificacionesExperto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Peliculas">
+              <PropertyRef Name="PeliculaID" />
+            </Principal>
+            <Dependent Role="CalificacionesExpertos">
+              <PropertyRef Name="PeliculaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comentari__Pelic__5070F446">
+          <End Role="Peliculas" Type="Self.Pelicula" Multiplicity="0..1" />
+          <End Role="Comentarios" Type="Self.Comentario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Peliculas">
+              <PropertyRef Name="PeliculaID" />
+            </Principal>
+            <Dependent Role="Comentarios">
+              <PropertyRef Name="PeliculaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comentari__Respu__52593CB8">
+          <End Role="Comentarios" Type="Self.Comentario" Multiplicity="0..1" />
+          <End Role="Comentarios1" Type="Self.Comentario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comentarios">
+              <PropertyRef Name="ComentarioID" />
+            </Principal>
+            <Dependent Role="Comentarios1">
+              <PropertyRef Name="RespuestaAComentarioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comentari__Usuar__5165187F">
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Comentarios" Type="Self.Comentario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="UsuarioID" />
+            </Principal>
+            <Dependent Role="Comentarios">
+              <PropertyRef Name="UsuarioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuarios__IDEsta__4D94879B">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="0..1" />
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="EstadoID" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="IDEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Peliculas__Poste__412EB0B6">
+          <End Role="Posters" Type="Self.Poster" Multiplicity="0..1" />
+          <End Role="Peliculas" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posters">
+              <PropertyRef Name="PosterID" />
+            </Principal>
+            <Dependent Role="Peliculas">
+              <PropertyRef Name="PosterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolesEnPe__IDPel__45F365D3">
+          <End Role="Peliculas" Type="Self.Pelicula" Multiplicity="0..1" />
+          <End Role="RolesEnPelicula" Type="Self.RolesEnPelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Peliculas">
+              <PropertyRef Name="PeliculaID" />
+            </Principal>
+            <Dependent Role="RolesEnPelicula">
+              <PropertyRef Name="IDPelic" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolesEnPe__RolID__440B1D61">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="0..1" />
+          <End Role="RolesEnPelicula" Type="Self.RolesEnPelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="RolID" />
+            </Principal>
+            <Dependent Role="RolesEnPelicula">
+              <PropertyRef Name="RolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PeliculasProgra11Entities" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="ActoresStaffs" EntityType="Self.ActoresStaff" />
+          <EntitySet Name="CalificacionesExpertos" EntityType="Self.CalificacionesExperto" />
+          <EntitySet Name="Comentarios" EntityType="Self.Comentario" />
+          <EntitySet Name="Estadoes" EntityType="Self.Estado" />
+          <EntitySet Name="ExpertosEnCalificaciones" EntityType="Self.ExpertosEnCalificacione" />
+          <EntitySet Name="Peliculas" EntityType="Self.Pelicula" />
+          <EntitySet Name="Posters" EntityType="Self.Poster" />
+          <EntitySet Name="Rols" EntityType="Self.Rol" />
+          <EntitySet Name="RolesEnPeliculas" EntityType="Self.RolesEnPelicula" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK__RolesEnPe__Actor__44FF419A" Association="Self.FK__RolesEnPe__Actor__44FF419A">
+            <End Role="ActoresStaff" EntitySet="ActoresStaffs" />
+            <End Role="RolesEnPelicula" EntitySet="RolesEnPeliculas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__Exper__49C3F6B7" Association="Self.FK__Calificac__Exper__49C3F6B7">
+            <End Role="ExpertosEnCalificaciones" EntitySet="ExpertosEnCalificaciones" />
+            <End Role="CalificacionesExpertos" EntitySet="CalificacionesExpertos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__Pelic__48CFD27E" Association="Self.FK__Calificac__Pelic__48CFD27E">
+            <End Role="Peliculas" EntitySet="Peliculas" />
+            <End Role="CalificacionesExpertos" EntitySet="CalificacionesExpertos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comentari__Pelic__5070F446" Association="Self.FK__Comentari__Pelic__5070F446">
+            <End Role="Peliculas" EntitySet="Peliculas" />
+            <End Role="Comentarios" EntitySet="Comentarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comentari__Respu__52593CB8" Association="Self.FK__Comentari__Respu__52593CB8">
+            <End Role="Comentarios" EntitySet="Comentarios" />
+            <End Role="Comentarios1" EntitySet="Comentarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comentari__Usuar__5165187F" Association="Self.FK__Comentari__Usuar__5165187F">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Comentarios" EntitySet="Comentarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuarios__IDEsta__4D94879B" Association="Self.FK__Usuarios__IDEsta__4D94879B">
+            <End Role="Estado" EntitySet="Estadoes" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Peliculas__Poste__412EB0B6" Association="Self.FK__Peliculas__Poste__412EB0B6">
+            <End Role="Posters" EntitySet="Posters" />
+            <End Role="Peliculas" EntitySet="Peliculas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolesEnPe__IDPel__45F365D3" Association="Self.FK__RolesEnPe__IDPel__45F365D3">
+            <End Role="Peliculas" EntitySet="Peliculas" />
+            <End Role="RolesEnPelicula" EntitySet="RolesEnPeliculas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolesEnPe__RolID__440B1D61" Association="Self.FK__RolesEnPe__RolID__440B1D61">
+            <End Role="Rol" EntitySet="Rols" />
+            <End Role="RolesEnPelicula" EntitySet="RolesEnPeliculas" />
+          </AssociationSet>
+          <FunctionImport Name="sp_ActivarInactivarUsuario">
+            <Parameter Name="NombreUsuario" Mode="In" Type="String" />
+            <Parameter Name="EstadoU" Mode="In" Type="String" />
+            <Parameter Name="Resultado" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ActualizarUsuario">
+            <Parameter Name="NombreUsuario" Mode="In" Type="String" />
+            <Parameter Name="NuevoNombre" Mode="In" Type="String" />
+            <Parameter Name="Cedula" Mode="In" Type="String" />
+            <Parameter Name="NuevosApellidos" Mode="In" Type="String" />
+            <Parameter Name="NuevoEmail" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AgregarCalificacionExperto">
+            <Parameter Name="ExpertoID" Mode="In" Type="Int32" />
+            <Parameter Name="PeliculaID" Mode="In" Type="Int32" />
+            <Parameter Name="Calificacion" Mode="In" Type="Decimal" />
+            <Parameter Name="Resultado" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AgregarComentario">
+            <Parameter Name="PeliculaID" Mode="In" Type="Int32" />
+            <Parameter Name="UsuarioID" Mode="In" Type="Int32" />
+            <Parameter Name="TextoComentario" Mode="In" Type="String" />
+            <Parameter Name="RespuestaAComentarioID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AgregarPelicula">
+            <Parameter Name="CodPelicula" Mode="In" Type="String" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Resena" Mode="In" Type="String" />
+            <Parameter Name="CalificacionGeneral" Mode="In" Type="Int32" />
+            <Parameter Name="FechaLanzamiento" Mode="In" Type="DateTime" />
+            <Parameter Name="PosterID" Mode="In" Type="Int32" />
+            <Parameter Name="Resultado" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AgregarRespuestaAComentario">
+            <Parameter Name="PeliculaID" Mode="In" Type="Int32" />
+            <Parameter Name="UsuarioID" Mode="In" Type="Int32" />
+            <Parameter Name="TextoComentario" Mode="In" Type="String" />
+            <Parameter Name="ComentarioAResponderID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AgregarRolEnPelicula">
+            <Parameter Name="RolID" Mode="In" Type="Int32" />
+            <Parameter Name="ActorStaffID" Mode="In" Type="Int32" />
+            <Parameter Name="IDPelic" Mode="In" Type="Int32" />
+            <Parameter Name="OrdenAparicion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AgregarRolSiNoExiste">
+            <Parameter Name="NombreRol" Mode="In" Type="String" />
+            <Parameter Name="Resultado" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ConsultarPeliculaPorCodigo" ReturnType="Collection(PeliculasProgra11Model.sp_ConsultarPeliculaPorCodigo_Result)">
+            <Parameter Name="CodPelicula" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ConsultarUsuarioPorNombre" ReturnType="Collection(PeliculasProgra11Model.sp_ConsultarUsuarioPorNombre_Result)">
+            <Parameter Name="NombreUsuario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_EditarCalificacionExperto">
+            <Parameter Name="CalificacionExpertoID" Mode="In" Type="Int32" />
+            <Parameter Name="NuevaCalificacion" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="sp_EditarComentarioPorID">
+            <Parameter Name="ComentarioID" Mode="In" Type="Int32" />
+            <Parameter Name="NuevoComentario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_EditarRol">
+            <Parameter Name="RolID" Mode="In" Type="Int32" />
+            <Parameter Name="NuevoNombre" Mode="In" Type="String" />
+            <Parameter Name="Resultado" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_EliminarCalificacionExperto">
+            <Parameter Name="PeliculaID" Mode="In" Type="Int32" />
+            <Parameter Name="ExpertoID" Mode="In" Type="Int32" />
+            <Parameter Name="Resultado" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_EliminarComentarioPorID">
+            <Parameter Name="ComentarioID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_EliminarRolPorNombreOId">
+            <Parameter Name="NombreOIdRol" Mode="In" Type="String" />
+            <Parameter Name="Resultado" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_EliminarUsuarioPorNombre">
+            <Parameter Name="NombreUsuario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ModificarPeliculaPorCodigo">
+            <Parameter Name="CodPelicula" Mode="In" Type="String" />
+            <Parameter Name="NuevoNombre" Mode="In" Type="String" />
+            <Parameter Name="NuevaResena" Mode="In" Type="String" />
+            <Parameter Name="NuevaCalificacion" Mode="In" Type="Int32" />
+            <Parameter Name="NuevaFechaLanzamiento" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ObtenerCalificadores" ReturnType="Collection(PeliculasProgra11Model.sp_ObtenerCalificadores_Result)">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ObtenerPeliculasRecientes" ReturnType="Collection(PeliculasProgra11Model.sp_ObtenerPeliculasRecientes_Result)" />
+          <FunctionImport Name="sp_ObtenerTiposInvolucrados">
+            <Parameter Name="NombreTipoInvolucrado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_RegistrarUsuario">
+            <Parameter Name="NombreUsuario" Mode="In" Type="String" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Apellidos" Mode="In" Type="String" />
+            <Parameter Name="Cedula" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Contrasena" Mode="In" Type="String" />
+            <Parameter Name="IDEstado" Mode="In" Type="Int32" />
+            <Parameter Name="Token" Mode="In" Type="String" />
+            <Parameter Name="TokenExpiracion" Mode="In" Type="DateTime" />
+            <Parameter Name="Exito" Mode="InOut" Type="Boolean" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_ConsultarPeliculaPorCodigo_Result">
+          <Property Type="Int32" Name="PeliculaID" Nullable="false" />
+          <Property Type="String" Name="CodPelicula" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Resena" Nullable="true" MaxLength="Max" />
+          <Property Type="Int32" Name="CalificacionGenerQal" Nullable="true" />
+          <Property Type="DateTime" Name="FechaLanzamiento" Nullable="true" />
+          <Property Type="Int32" Name="PosterID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_ConsultarUsuarioPorNombre_Result">
+          <Property Type="Int32" Name="UsuarioID" Nullable="false" />
+          <Property Type="String" Name="NombreUsuario" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Apellidos" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Cedula" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Contrasena" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="IDEstado" Nullable="true" />
+          <Property Type="String" Name="Token" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="TokenExpiracion" Nullable="true" Precision="16" />
+        </ComplexType>
+        <ComplexType Name="sp_ObtenerCalificadores_Result">
+          <Property Type="Int32" Name="ExpertoID" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="codigoexperto" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_ObtenerPeliculasRecientes_Result">
+          <Property Type="Int32" Name="PeliculaID" Nullable="false" />
+          <Property Type="String" Name="CodPelicula" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="NombrePelicula" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Resena" Nullable="true" MaxLength="Max" />
+          <Property Type="Int32" Name="CalificacionGenerQal" Nullable="true" />
+          <Property Type="DateTime" Name="FechaLanzamiento" Nullable="true" />
+          <Property Type="String" Name="NombrePoster" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="RutaPoster" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="NombreRol" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="NombreStaff" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Comentario" Nullable="true" MaxLength="Max" />
+          <Property Type="Decimal" Name="CalificacionExperto" Nullable="true" Precision="3" Scale="1" />
+          <Property Type="String" Name="NombreUsuario" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmailUsuario" Nullable="true" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PeliculasProgra11ModelStoreContainer" CdmEntityContainer="PeliculasProgra11Entities">
+          <EntitySetMapping Name="ActoresStaffs">
+            <EntityTypeMapping TypeName="PeliculasProgra11Model.ActoresStaff">
+              <MappingFragment StoreEntitySet="ActoresStaff">
+                <ScalarProperty Name="ActorStaffID" ColumnName="ActorStaffID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="PaginaWeb" ColumnName="PaginaWeb" />
+                <ScalarProperty Name="Facebook" ColumnName="Facebook" />
+                <ScalarProperty Name="Instagram" ColumnName="Instagram" />
+                <ScalarProperty Name="Twitter" ColumnName="Twitter" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CalificacionesExpertos">
+            <EntityTypeMapping TypeName="PeliculasProgra11Model.CalificacionesExperto">
+              <MappingFragment StoreEntitySet="CalificacionesExpertos">
+                <ScalarProperty Name="PeliculaID" ColumnName="PeliculaID" />
+                <ScalarProperty Name="ExpertoID" ColumnName="ExpertoID" />
+                <ScalarProperty Name="Calificacion" ColumnName="Calificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comentarios">
+            <EntityTypeMapping TypeName="PeliculasProgra11Model.Comentario">
+              <MappingFragment StoreEntitySet="Comentarios">
+                <ScalarProperty Name="ComentarioID" ColumnName="ComentarioID" />
+                <ScalarProperty Name="PeliculaID" ColumnName="PeliculaID" />
+                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
+                <ScalarProperty Name="Comentario1" ColumnName="Comentario" />
+                <ScalarProperty Name="FechaComentario" ColumnName="FechaComentario" />
+                <ScalarProperty Name="RespuestaAComentarioID" ColumnName="RespuestaAComentarioID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estadoes">
+            <EntityTypeMapping TypeName="PeliculasProgra11Model.Estado">
+              <MappingFragment StoreEntitySet="Estado">
+                <ScalarProperty Name="EstadoID" ColumnName="EstadoID" />
+                <ScalarProperty Name="NombreEstado" ColumnName="NombreEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpertosEnCalificaciones">
+            <EntityTypeMapping TypeName="PeliculasProgra11Model.ExpertosEnCalificacione">
+              <MappingFragment StoreEntitySet="ExpertosEnCalificaciones">
+                <ScalarProperty Name="ExpertoID" ColumnName="ExpertoID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="codigoexperto" ColumnName="codigoexperto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Peliculas">
+            <EntityTypeMapping TypeName="PeliculasProgra11Model.Pelicula">
+              <MappingFragment StoreEntitySet="Peliculas">
+                <ScalarProperty Name="PeliculaID" ColumnName="PeliculaID" />
+                <ScalarProperty Name="CodPelicula" ColumnName="CodPelicula" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Resena" ColumnName="Resena" />
+                <ScalarProperty Name="CalificacionGenerQal" ColumnName="CalificacionGenerQal" />
+                <ScalarProperty Name="FechaLanzamiento" ColumnName="FechaLanzamiento" />
+                <ScalarProperty Name="PosterID" ColumnName="PosterID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Posters">
+            <EntityTypeMapping TypeName="PeliculasProgra11Model.Poster">
+              <MappingFragment StoreEntitySet="Posters">
+                <ScalarProperty Name="PosterID" ColumnName="PosterID" />
+                <ScalarProperty Name="NombreArchivo" ColumnName="NombreArchivo" />
+                <ScalarProperty Name="RutaArchivo" ColumnName="RutaArchivo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rols">
+            <EntityTypeMapping TypeName="PeliculasProgra11Model.Rol">
+              <MappingFragment StoreEntitySet="Rol">
+                <ScalarProperty Name="RolID" ColumnName="RolID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RolesEnPeliculas">
+            <EntityTypeMapping TypeName="PeliculasProgra11Model.RolesEnPelicula">
+              <MappingFragment StoreEntitySet="RolesEnPelicula">
+                <ScalarProperty Name="RolEnPeliculaID" ColumnName="RolEnPeliculaID" />
+                <ScalarProperty Name="RolID" ColumnName="RolID" />
+                <ScalarProperty Name="ActorStaffID" ColumnName="ActorStaffID" />
+                <ScalarProperty Name="IDPelic" ColumnName="IDPelic" />
+                <ScalarProperty Name="OrdenAparicion" ColumnName="OrdenAparicion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="PeliculasProgra11Model.Usuario">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Cedula" ColumnName="Cedula" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+                <ScalarProperty Name="IDEstado" ColumnName="IDEstado" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="TokenExpiracion" ColumnName="TokenExpiracion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_ActivarInactivarUsuario" FunctionName="PeliculasProgra11Model.Store.sp_ActivarInactivarUsuario" />
+          <FunctionImportMapping FunctionImportName="sp_ActualizarUsuario" FunctionName="PeliculasProgra11Model.Store.sp_ActualizarUsuario" />
+          <FunctionImportMapping FunctionImportName="sp_AgregarCalificacionExperto" FunctionName="PeliculasProgra11Model.Store.sp_AgregarCalificacionExperto" />
+          <FunctionImportMapping FunctionImportName="sp_AgregarComentario" FunctionName="PeliculasProgra11Model.Store.sp_AgregarComentario" />
+          <FunctionImportMapping FunctionImportName="sp_AgregarPelicula" FunctionName="PeliculasProgra11Model.Store.sp_AgregarPelicula" />
+          <FunctionImportMapping FunctionImportName="sp_AgregarRespuestaAComentario" FunctionName="PeliculasProgra11Model.Store.sp_AgregarRespuestaAComentario" />
+          <FunctionImportMapping FunctionImportName="sp_AgregarRolEnPelicula" FunctionName="PeliculasProgra11Model.Store.sp_AgregarRolEnPelicula" />
+          <FunctionImportMapping FunctionImportName="sp_AgregarRolSiNoExiste" FunctionName="PeliculasProgra11Model.Store.sp_AgregarRolSiNoExiste" />
+          <FunctionImportMapping FunctionImportName="sp_ConsultarPeliculaPorCodigo" FunctionName="PeliculasProgra11Model.Store.sp_ConsultarPeliculaPorCodigo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PeliculasProgra11Model.sp_ConsultarPeliculaPorCodigo_Result">
+                <ScalarProperty Name="PeliculaID" ColumnName="PeliculaID" />
+                <ScalarProperty Name="CodPelicula" ColumnName="CodPelicula" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Resena" ColumnName="Resena" />
+                <ScalarProperty Name="CalificacionGenerQal" ColumnName="CalificacionGenerQal" />
+                <ScalarProperty Name="FechaLanzamiento" ColumnName="FechaLanzamiento" />
+                <ScalarProperty Name="PosterID" ColumnName="PosterID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ConsultarUsuarioPorNombre" FunctionName="PeliculasProgra11Model.Store.sp_ConsultarUsuarioPorNombre">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PeliculasProgra11Model.sp_ConsultarUsuarioPorNombre_Result">
+                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Cedula" ColumnName="Cedula" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+                <ScalarProperty Name="IDEstado" ColumnName="IDEstado" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="TokenExpiracion" ColumnName="TokenExpiracion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_EditarCalificacionExperto" FunctionName="PeliculasProgra11Model.Store.sp_EditarCalificacionExperto" />
+          <FunctionImportMapping FunctionImportName="sp_EditarComentarioPorID" FunctionName="PeliculasProgra11Model.Store.sp_EditarComentarioPorID" />
+          <FunctionImportMapping FunctionImportName="sp_EditarRol" FunctionName="PeliculasProgra11Model.Store.sp_EditarRol" />
+          <FunctionImportMapping FunctionImportName="sp_EliminarCalificacionExperto" FunctionName="PeliculasProgra11Model.Store.sp_EliminarCalificacionExperto" />
+          <FunctionImportMapping FunctionImportName="sp_EliminarComentarioPorID" FunctionName="PeliculasProgra11Model.Store.sp_EliminarComentarioPorID" />
+          <FunctionImportMapping FunctionImportName="sp_EliminarRolPorNombreOId" FunctionName="PeliculasProgra11Model.Store.sp_EliminarRolPorNombreOId" />
+          <FunctionImportMapping FunctionImportName="sp_EliminarUsuarioPorNombre" FunctionName="PeliculasProgra11Model.Store.sp_EliminarUsuarioPorNombre" />
+          <FunctionImportMapping FunctionImportName="sp_ModificarPeliculaPorCodigo" FunctionName="PeliculasProgra11Model.Store.sp_ModificarPeliculaPorCodigo" />
+          <FunctionImportMapping FunctionImportName="sp_ObtenerCalificadores" FunctionName="PeliculasProgra11Model.Store.sp_ObtenerCalificadores">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PeliculasProgra11Model.sp_ObtenerCalificadores_Result">
+                <ScalarProperty Name="ExpertoID" ColumnName="ExpertoID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="codigoexperto" ColumnName="codigoexperto" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ObtenerPeliculasRecientes" FunctionName="PeliculasProgra11Model.Store.sp_ObtenerPeliculasRecientes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PeliculasProgra11Model.sp_ObtenerPeliculasRecientes_Result">
+                <ScalarProperty Name="PeliculaID" ColumnName="PeliculaID" />
+                <ScalarProperty Name="CodPelicula" ColumnName="CodPelicula" />
+                <ScalarProperty Name="NombrePelicula" ColumnName="NombrePelicula" />
+                <ScalarProperty Name="Resena" ColumnName="Resena" />
+                <ScalarProperty Name="CalificacionGenerQal" ColumnName="CalificacionGenerQal" />
+                <ScalarProperty Name="FechaLanzamiento" ColumnName="FechaLanzamiento" />
+                <ScalarProperty Name="NombrePoster" ColumnName="NombrePoster" />
+                <ScalarProperty Name="RutaPoster" ColumnName="RutaPoster" />
+                <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
+                <ScalarProperty Name="NombreStaff" ColumnName="NombreStaff" />
+                <ScalarProperty Name="Comentario" ColumnName="Comentario" />
+                <ScalarProperty Name="CalificacionExperto" ColumnName="CalificacionExperto" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="EmailUsuario" ColumnName="EmailUsuario" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ObtenerTiposInvolucrados" FunctionName="PeliculasProgra11Model.Store.sp_ObtenerTiposInvolucrados" />
+          <FunctionImportMapping FunctionImportName="sp_RegistrarUsuario" FunctionName="PeliculasProgra11Model.Store.sp_RegistrarUsuario" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
